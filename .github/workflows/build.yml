@@ -50,11 +50,11 @@ jobs:
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
       run: |
-        go build -o ./mdathome-${{ github.ref }}-${{ matrix.goos }}-${{ matrix.goarch }} -tags netgo -trimpath -ldflags="-X github.com/lflare/mdathome-golang/internal/mdathome.ClientVersion=${GITHUB_REF##*/}"  ./cmd/mdathome
+        go build -o ./build/mdathome-${{ github.ref }}-${{ matrix.goos }}-${{ matrix.goarch }} -tags netgo -trimpath -ldflags="-X github.com/lflare/mdathome-golang/internal/mdathome.ClientVersion=${GITHUB_REF##*/}"  ./cmd/mdathome
 
     - name: Save artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: dist-without-markdown
+        name: artifacts
         path: |
-          mdathome-*
+          build/*
