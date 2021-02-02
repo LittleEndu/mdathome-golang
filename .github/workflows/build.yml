@@ -28,6 +28,15 @@ jobs:
       run: |
         sudo apt update
         sudo apt install upx
+        echo "::set-output name=go_cache::$(go env GOCACHE)"
+
+    - name: Cache the build cache
+      uses: actions/cache@v2
+      with:
+        path: ${{ steps.vars.outputs.go_cache }}
+        key: cross-build-go${{ matrix.go }}-${{ matrix.goos }}-${{ hashFiles('**/go.sum') }}
+        restore-keys: |
+          cross-build-go${{ matrix.go }}-${{ matrix.goos }}
 
     - name: Checkout
       uses: actions/checkout@v2
@@ -35,6 +44,8 @@ jobs:
     - name: Build Client
       env:
         CGO_ENABLED: 0
+        GOOS: ${{matrix.goos}}
+        GOARCH: ${{matrix.goarch}}
         LDFLAGS: "-X github.com/lflare/mdathome-golang/internal/mdathome.ClientVersion=${GITHUB_REF##*/} -X mdathome.Build=${GITHUB_SHA}" 
       run: |
-        go build -o ./mdathome-golang -tags netgo -trimpath -ldflags=${LDFLAGS} ./cmd/mdathome
+        go build -o ./mdathome-${GITHUB_REF##*/}-${GOOS}-${GOARCH} -tags netgo -trimpath -ldflags=${LDFLAGS} ./cmd/mdathome
