@@ -51,6 +51,7 @@ jobs:
         GOARCH: ${{ matrix.goarch }}
       run: |
         go build -o ./build/mdathome-${{ github.ref }}-${{ matrix.goos }}-${{ matrix.goarch }} -tags netgo -trimpath -ldflags="-X github.com/lflare/mdathome-golang/internal/mdathome.ClientVersion=${GITHUB_REF##*/}"  ./cmd/mdathome
+        ls -lah
 
     - name: Save artifacts
       uses: actions/upload-artifact@v2
