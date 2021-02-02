@@ -49,6 +49,5 @@ jobs:
         CGO_ENABLED: 0
         GOOS: ${{ matrix.goos }}
         GOARCH: ${{ matrix.goarch }}
-        LDFLAGS: "-X github.com/lflare/mdathome-golang/internal/mdathome.ClientVersion=${GITHUB_REF}" 
       run: |
-        go build -o ./mdathome-${{ github.ref }}-${{ matrix.goos }}-${{ matrix.goarch }} -tags netgo -trimpath -ldflags=${LDFLAGS} ./cmd/mdathome
+        go build -o ./mdathome-${{ github.ref }}-${{ matrix.goos }}-${{ matrix.goarch }} -tags netgo -trimpath -ldflags="-X github.com/lflare/mdathome-golang/internal/mdathome.ClientVersion=${GITHUB_REF##*/}"  ./cmd/mdathome
