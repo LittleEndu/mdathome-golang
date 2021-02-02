@@ -23,8 +23,8 @@ jobs:
     
     - name: Prepare UPX
       run: |
-        apt update
-        apt install upx
+        sudo apt update
+        sudo apt install upx
 
     - name: Build
       uses: goreleaser/goreleaser-action@v2
